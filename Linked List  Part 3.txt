@@ -1,0 +1,201 @@
+1->
+
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode* temp = head;
+        ListNode* c = new ListNode(100);
+        ListNode* D = c;
+        ListNode* x = NULL;
+        while(temp != NULL){
+            if(temp->next != NULL && (temp->val == temp->next->val)){
+                x = temp;
+            }
+            if(x != NULL && x->val == temp->val) temp = temp->next;
+            else{
+                c->next = temp;
+                c = c->next;
+                temp = temp->next;
+            }
+        }
+        c->next = NULL;
+        return D->next;
+    }
+};
+
+2->
+
+3->
+
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        ListNode* temp = head;
+        ListNode* D1 = new ListNode(-1);
+        ListNode* A = D1;
+        ListNode* D2 = new ListNode(-1);
+        ListNode* B = D2;
+        int n = 0;
+        while(temp){
+            if(n%2 == 0){
+                D1->next = temp;
+                D1 = D1->next;
+            }
+            else{
+                D2->next = temp;
+                D2 = D2->next;
+            }
+            temp = temp->next;
+            n++;
+        }
+        D1->next = B->next;
+        D2->next = NULL;
+        return A->next;
+    }
+};
+
+4->
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head==NULL || head->next==NULL) return head;
+        ListNode* newHead = reverseList(head->next);
+        head->next->next = head;
+        head->next = NULL;
+        return newHead;
+    }
+
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* A = reverseList(l1);
+        ListNode* B = reverseList(l2);
+        string x = "";
+        string y = "";
+        while(A){
+            x = x +  to_string(A->val);
+            A = A->next;
+        }
+        while(B){
+            y = y + to_string(B->val);
+            B = B->next;
+        }
+        int num1 = std::stoi(x);
+        int num2 = std::stoi(y);
+        int sum = num1+num2;
+        std::string str = std::to_string(sum);
+        int n = str.size();
+        int z = 0;
+        ListNode* D = new ListNode(-1);
+        ListNode* fin = D;
+        while(z < n){
+            ListNode* semi = new ListNode(str[z] - '0');
+            D->next = semi;
+            D = D->next;
+            z++;
+        }
+        D->next = NULL;
+        ListNode* runn = reverseList(fin->next);
+        return  runn;
+    }
+};
+
+5->
+class Solution {
+public:
+    int binary_to_decimal(string &binary){
+        int n = binary.size();
+        int result = 0;
+        for(int i = n-1; i >= 0; i--){
+            char ch = binary[i];
+            int num = ch - '0';
+            result += num*(1<<(n-i-1));
+        }
+        return result;
+    }
+    int getDecimalValue(ListNode* head) {
+        ListNode* temp = head;
+        string str = "";
+        while(temp){
+            str += to_string(temp->val);
+            temp = temp->next;
+        }
+        return binary_to_decimal(str);
+    }
+};
+
+6->
+class Solution {
+public:
+    int sum(vector<int> &v) {
+        int n = v.size();
+        int maxi = INT_MIN;
+
+        for (int i = 0; i < n / 2; i++) {
+            int result = v[i] + v[n - i - 1];
+            maxi = max(maxi, result);
+        }
+
+        return maxi;
+    }
+
+    int pairSum(ListNode* head) {
+        ListNode* temp = head;
+        vector<int> v;
+
+        while (temp) {
+            v.push_back(temp->val);
+            temp = temp->next;
+        }
+
+        return sum(v);
+    }
+};
+
+7->
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head==NULL || head->next==NULL) return head;
+        ListNode* newHead = reverseList(head->next);
+        head->next->next = head;
+        head->next = NULL;
+        return newHead;
+    }
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode* temp = head;
+        ListNode* D = new ListNode(-1);
+        ListNode* B = NULL;
+        ListNode* E = D;
+
+        while (temp) {
+            int x = 1;
+            ListNode* A = temp;
+
+            while (x < k && temp->next != NULL) {
+                temp = temp->next;
+                x++;
+            }
+
+            if (x < k) {
+                D->next = B;
+                return E->next;
+            }
+
+            B = temp->next;
+            temp->next = NULL;
+
+            ListNode* C = reverseList(A);
+
+            D->next = C;
+
+            while (D->next != NULL) {
+                D = D->next;
+            }
+
+            temp = B;
+        }
+
+        return E->next;
+    }
+};
